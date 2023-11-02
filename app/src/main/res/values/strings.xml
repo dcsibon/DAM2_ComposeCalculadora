@@ -17,7 +17,5 @@
     <string name="txt_btn8">8</string>
     <string name="txt_btn9">9</string>
     <string name="txt_btnDec">.</string>
-    <string name="txt_txtPantalla">%1$s</string>
-    <string name="txt_txtDetalle">%1$s</string>
     <string name="txt_btnBorrar"><![CDATA[<]]></string>
 </resources>
