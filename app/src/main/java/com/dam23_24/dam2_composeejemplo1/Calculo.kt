@@ -5,15 +5,15 @@ import android.icu.text.DecimalFormat
 @Suppress("SpellCheckingInspection")
 class Calculo {
 
-    var num1: Float = 0f
-    var num2: Float = 0f
-    var op: Int = -1
-    var result: Float = 0f
+    private var num1: Float = 0f
+    private var num2: Float = 0f
+    private var op: Int = -1
+    private var result: Float = 0f
 
-    var primerNum: Boolean = true // true -> Esperando num1 / false -> Esperando num2
-    var numTemp1: String = ""
-    var numTemp2: String = ""
-    var numCalculos: Int = 0
+    private var primerNum: Boolean = true // true -> Esperando num1 / false -> Esperando num2
+    private var numTemp1: String = ""
+    private var numTemp2: String = ""
+    private var numCalculos: Int = 0
     var msjPpal: String = ""
     var msjDetalle: String = ""
 
@@ -22,7 +22,7 @@ class Calculo {
     /**
      * Realiza la llamada al método adecuado para realizar el cálculo solicitado en la calculadora.
      */
-    fun calcular() {
+    private fun calcular() {
         when (this.op) {
             0 -> this.suma()
             1 -> this.resta()
@@ -66,7 +66,7 @@ class Calculo {
      * @param num operación (0 -> + / 1 -> - / 2 -> * / 3 -> /
      * @return String con el símbolo de la operación
      */
-    fun operadorTxt(num: Int): String {
+    private fun operadorTxt(num: Int): String {
         return when (num) {
             0 -> "+"
             1 -> "-"
@@ -81,7 +81,7 @@ class Calculo {
      *
      * @return String con el símbolo de la operación
      */
-    fun operadorTxt(): String {
+    private fun operadorTxt(): String {
         return when (this.op) {
             0 -> "+"
             1 -> "-"
@@ -185,7 +185,7 @@ class Calculo {
      */
     fun borraDigito(): Boolean {
 
-        var ret: Boolean = false
+        var ret = false
 
         //Comprobamos si está introduciendo el primer o segundo número y si no están vacíos
         if (this.primerNum) {
@@ -240,13 +240,13 @@ class Calculo {
     }
 
 
-    fun actualizaInfoPantallas() {
+    private fun actualizaInfoPantallas() {
         //Actualizamos la información de los mensajes que se mostrarán en la pantalla de la calculadora
         if (this.primerNum) {
             actualizaInfoPantallas(pantalla = this.numTemp1, detalle = this.numTemp1)
         } else {
             actualizaInfoPantallas(
-                pantalla = if (this.numTemp2.isEmpty()) this.operadorTxt() else this.numTemp2,
+                pantalla = this.numTemp2.ifEmpty { this.operadorTxt() },
                 detalle = this.numTemp1 + this.operadorTxt() + this.numTemp2
             )
         }
@@ -258,7 +258,7 @@ class Calculo {
      * @param pantalla info a mostrar en txtPantalla
      * @param detalle info a mostrar en txtDetalle
      */
-    fun actualizaInfoPantallas(pantalla: String, detalle: String) {
+    private fun actualizaInfoPantallas(pantalla: String, detalle: String) {
         this.msjPpal = pantalla
         this.msjDetalle = detalle
     }

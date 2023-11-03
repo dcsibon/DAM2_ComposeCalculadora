@@ -1,8 +1,5 @@
 package com.dam23_24.dam2_composeejemplo1.screens
 
-import android.content.Context
-import android.icu.text.DecimalFormat
-import android.service.autofill.OnClickAction
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.dam23_24.dam2_composeejemplo1.Calculo
 import com.dam23_24.dam2_composeejemplo1.R
 
@@ -49,7 +45,8 @@ fun CalcScreen() {
 
         ScreenDetailText(
             msjPpal = msjPpal,
-            msjDetalle = msjDetalle)
+            msjDetalle = msjDetalle
+        )
 
         Column(
             modifier = Modifier
@@ -134,7 +131,11 @@ fun CalcScreen() {
                     msjDetalle = calc.msjDetalle
                 },
                 onClickBtnResult = {
-                    if (!calc.pulsaResult()) Toast.makeText(context, "Debe introducir 2 números y una operación para mostrar un resultado", Toast.LENGTH_SHORT).show()
+                    if (!calc.pulsaResult()) Toast.makeText(
+                        context,
+                        "Debe introducir 2 números y una operación para mostrar un resultado",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
                 })
@@ -151,7 +152,11 @@ fun CalcScreen() {
                     msjDetalle = calc.msjDetalle
                 },
                 onClickBtnDel = {
-                    if (!calc.borraDigito()) Toast.makeText(context, "No existe nada para borrar", Toast.LENGTH_SHORT).show()
+                    if (!calc.borraDigito()) Toast.makeText(
+                        context,
+                        "No existe nada para borrar",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
                 })
