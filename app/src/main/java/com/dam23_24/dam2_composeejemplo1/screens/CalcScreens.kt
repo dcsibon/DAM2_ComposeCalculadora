@@ -36,7 +36,6 @@ import com.dam23_24.dam2_composeejemplo1.R
 
 
 private val calc = Calculo()
-private val df = DecimalFormat("#.##")
 
 @Preview(showBackground = true)
 @Composable
@@ -48,7 +47,9 @@ fun CalcScreen() {
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        ScreenDetailText(msjPpal, msjDetalle)
+        ScreenDetailText(
+            msjPpal = msjPpal,
+            msjDetalle = msjDetalle)
 
         Column(
             modifier = Modifier
@@ -56,24 +57,114 @@ fun CalcScreen() {
         ) {
 
             ScreenBtn0_3(
-                msjPpal,
-                msjDetalle,
-                onClick = { })
+                onClickBtn0 = {
+                    calc.tecleaDigito(0)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn1 = {
+                    calc.tecleaDigito(1)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn2 = {
+                    calc.tecleaDigito(2)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn3 = {
+                    calc.tecleaDigito(3)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                })
 
-            ScreenBtn4_7()
+            ScreenBtn4_7(
+                onClickBtn4 = {
+                    calc.tecleaDigito(4)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn5 = {
+                    calc.tecleaDigito(5)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn6 = {
+                    calc.tecleaDigito(6)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn7 = {
+                    calc.tecleaDigito(7)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                })
 
-            ScreenBtn8_C()
+            ScreenBtn8_C(
+                onClickBtn8 = {
+                    calc.tecleaDigito(8)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtn9 = {
+                    calc.tecleaDigito(9)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnDec = {
+                    calc.tecleaDigito(10)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnC = {
+                    calc.iniValores()
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                })
 
-            ScreenBtnOper_Res()
+            ScreenBtnOper_Res(
+                onClickBtnSum = {
+                    calc.tecleaOperador(0)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnRes = {
+                    calc.tecleaOperador(1)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnResult = {
+                    if (!calc.pulsaResult()) Toast.makeText(context, "Debe introducir 2 números y una operación para mostrar un resultado", Toast.LENGTH_SHORT).show()
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                })
 
-            ScreenBtnOper_Del()
-
+            ScreenBtnOper_Del(
+                onClickBtnMul = {
+                    calc.tecleaOperador(2)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnDiv = {
+                    calc.tecleaOperador(3)
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                },
+                onClickBtnDel = {
+                    if (!calc.borraDigito()) Toast.makeText(context, "No existe nada para borrar", Toast.LENGTH_SHORT).show()
+                    msjPpal = calc.msjPpal
+                    msjDetalle = calc.msjDetalle
+                })
         }
     }
 }
 
+
 @Composable
-fun ScreenDetailText(msjPpal: String, msjDetalle: String) {
+fun ScreenDetailText(
+    msjPpal: String,
+    msjDetalle: String
+) {
 
     Column(
         modifier = Modifier
@@ -107,9 +198,10 @@ fun ScreenDetailText(msjPpal: String, msjDetalle: String) {
 
 @Composable
 fun ScreenBtn0_3(
-    msjPpal: String,
-    msjDetalle: String,
-    onClick: () -> Unit
+    onClickBtn0: () -> Unit,
+    onClickBtn1: () -> Unit,
+    onClickBtn2: () -> Unit,
+    onClickBtn3: () -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -118,25 +210,25 @@ fun ScreenBtn0_3(
             .padding(start = 20.dp, top = 40.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { msjPpal = "0" },
+            onClick = { onClickBtn0() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn0), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn1() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn1), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn2() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn2), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn3() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn3), fontSize = 32.sp)
@@ -145,7 +237,12 @@ fun ScreenBtn0_3(
 }
 
 @Composable
-fun ScreenBtn4_7() {
+fun ScreenBtn4_7(
+    onClickBtn4: () -> Unit,
+    onClickBtn5: () -> Unit,
+    onClickBtn6: () -> Unit,
+    onClickBtn7: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -153,25 +250,25 @@ fun ScreenBtn4_7() {
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { },
+            onClick = { onClickBtn4() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn4), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn5() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn5), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn6() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn6), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn7() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn7), fontSize = 32.sp)
@@ -180,7 +277,12 @@ fun ScreenBtn4_7() {
 }
 
 @Composable
-fun ScreenBtn8_C() {
+fun ScreenBtn8_C(
+    onClickBtn8: () -> Unit,
+    onClickBtn9: () -> Unit,
+    onClickBtnDec: () -> Unit,
+    onClickBtnC: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -188,25 +290,25 @@ fun ScreenBtn8_C() {
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { },
+            onClick = { onClickBtn8() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn8), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtn9() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn9), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnDec() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnDec), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnC() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnCE), fontSize = 32.sp)
@@ -215,7 +317,11 @@ fun ScreenBtn8_C() {
 }
 
 @Composable
-fun ScreenBtnOper_Res() {
+fun ScreenBtnOper_Res(
+    onClickBtnSum: () -> Unit,
+    onClickBtnRes: () -> Unit,
+    onClickBtnResult: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -223,19 +329,19 @@ fun ScreenBtnOper_Res() {
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { },
+            onClick = { onClickBtnSum() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnSuma), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnRes() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnResta), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnResult() },
             modifier = Modifier
                 .width(160.dp)
                 .height(80.dp)
@@ -246,7 +352,11 @@ fun ScreenBtnOper_Res() {
 }
 
 @Composable
-fun ScreenBtnOper_Del() {
+fun ScreenBtnOper_Del(
+    onClickBtnMul: () -> Unit,
+    onClickBtnDiv: () -> Unit,
+    onClickBtnDel: () -> Unit
+) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
@@ -254,19 +364,19 @@ fun ScreenBtnOper_Del() {
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { },
+            onClick = { onClickBtnMul() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnMul), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnDiv() },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnDiv), fontSize = 32.sp)
         }
         Button(
-            onClick = { },
+            onClick = { onClickBtnDel() },
             modifier = Modifier
                 .width(160.dp)
                 .height(80.dp)
@@ -276,263 +386,4 @@ fun ScreenBtnOper_Del() {
     }
 }
 
-
-/**
- * Agrega el dígito pulsado en el número correspondiente del objeto calc.
- *
- * @param num dígito pulsado del 0 al 9 o punto decimal (10)
- */
-private fun btnClicked(calc: Calculo, num: Int) {
-    calc.tecleaDigito(num)
-
-    //Mostramos info actualizada en los TextView de la app
-    muestraValor(calc)
-}
-
-/**
- * Muestra la información en los componentest TextView txtPantalla y txtDetalle.
- *
- * @param pantalla info a mostrar en txtPantalla
- * @param detalle info a mostrar en txtDetalle
- */
-private fun muestraValor(pantalla: String, detalle: String) {
-    /*txtPantalla.text = getString(R.string.txt_txtPantalla, pantalla)
-    txtDetalle.text = getString(R.string.txt_txtDetalle, detalle)*/
-}
-
-/**
- * Muestra la información en los componentes Text que contienen la información de la pantalla principal y la pantalla de detalle de la calculadora dependiendo del paso donde nos encontremos.
- */
-private fun muestraValor() {
-    //Mostramos info actualizada en los TextView de la app
-    if (calc.primerNum) {
-        muestraValor(calc.numTemp1, calc.numTemp1)
-    } else {
-        if (calc.numTemp2.isEmpty()) {
-            muestraValor(calc.operadorTxt(), calc.numTemp1 + calc.operadorTxt() + calc.numTemp2)
-        } else {
-            muestraValor(calc.numTemp2, calc.numTemp1 + calc.operadorTxt() + calc.numTemp2)
-        }
-    }
-}
-
-/**
- * Muestra un mensaje de error en pantalla durante un tiempo corto.
- *
- * @msj mensaje de error
- */
-private fun mensajeError(context: Context, msj: String) {
-    Toast.makeText(context, msj, Toast.LENGTH_SHORT).show()
-}
-
-/*@Preview(showBackground = true)*/
-@Composable
-fun CalcScreen1() {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-
-        val (colPantallas, filaBotones1, filaBotones2, filaBotones3, filaBotones4, filaBotones5) = createRefs()
-
-        val topGuide = createGuidelineFromTop(0.05f)
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 50.dp)
-                .constrainAs(colPantallas) {
-                    top.linkTo(topGuide)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-
-            Text(
-                text = "",
-                textAlign = TextAlign.End,
-                fontSize = 50.sp,
-                modifier = Modifier
-                    .border(3.dp, Color.Black)
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
-            Text(
-                text = "",
-                textAlign = TextAlign.End,
-                fontSize = 24.sp,
-                modifier = Modifier
-                    .border(3.dp, Color.Black)
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
-            )
-        }
-
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 40.dp, end = 20.dp, bottom = 40.dp)
-                .constrainAs(filaBotones1) {
-                    top.linkTo(colPantallas.bottom)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn0), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn1), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn2), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn3), fontSize = 32.sp)
-            }
-        }
-
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
-                .constrainAs(filaBotones2) {
-                    top.linkTo(filaBotones1.bottom)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn4), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn5), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn6), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn7), fontSize = 32.sp)
-            }
-        }
-
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
-                .constrainAs(filaBotones3) {
-                    top.linkTo(filaBotones2.bottom)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn8), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btn9), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnDec), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnCE), fontSize = 32.sp)
-            }
-        }
-
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
-                .constrainAs(filaBotones4) {
-                    top.linkTo(filaBotones3.bottom)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnSuma), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnResta), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .width(160.dp)
-                    .height(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnResult), fontSize = 32.sp)
-            }
-        }
-
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
-                .constrainAs(filaBotones5) {
-                    top.linkTo(filaBotones4.bottom)
-                    start.linkTo(parent.start)
-                }
-        ) {
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnMul), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier.size(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnDiv), fontSize = 32.sp)
-            }
-            Button(
-                onClick = { },
-                modifier = Modifier
-                    .width(160.dp)
-                    .height(80.dp)
-            ) {
-                Text(text = stringResource(R.string.txt_btnBorrar), fontSize = 32.sp)
-            }
-        }
-    }
-}
 
