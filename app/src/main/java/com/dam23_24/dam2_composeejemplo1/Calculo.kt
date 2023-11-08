@@ -19,6 +19,7 @@ class Calculo {
 
     private val df = DecimalFormat("#.##")
 
+
     /**
      * Realiza la llamada al método adecuado para realizar el cálculo solicitado en la calculadora.
      */
@@ -32,12 +33,14 @@ class Calculo {
         this.numCalculos += 1
     }
 
+
     /**
      * Realiza la suma de num1 y num2 y lo almacena en result.
      */
     private fun suma() {
         this.result = this.num1 + this.num2
     }
+
 
     /**
      * Realiza la resta de num1 y num2 y lo almacena en result
@@ -46,6 +49,7 @@ class Calculo {
         this.result = this.num1 - this.num2
     }
 
+
     /**
      * Realiza la multiplicación de num1 y num2 y lo almacena en result
      */
@@ -53,12 +57,14 @@ class Calculo {
         this.result = this.num1 * this.num2
     }
 
+
     /**
      * Realiza la división de num1 y num2 y lo almacena en result
      */
     private fun divide() {
         this.result = this.num1 / this.num2
     }
+
 
     /**
      * Según el parámetro num, retornará el símbolo correspondiente a la operación
@@ -76,6 +82,7 @@ class Calculo {
         }
     }
 
+
     /**
      * Según this.op, retornará el símbolo correspondiente a la operación
      *
@@ -91,12 +98,82 @@ class Calculo {
         }
     }
 
+
     /**
-     * Actualiza y almacena la información en cadenas de caracteres (this.numTemp1 y this.numTemp2) de cada pulsación de los dígitos de los números que se usarán posteriormente en el cálculo y acabarán siendo almacenados como this.num1 y this.num2.
+     * Tratamiento de la operación cuando estamos introduciendo el primer número.
+     */
+    private fun actualizaOperadorPrimerNum(num: Int) {
+
+        if (this.numCalculos > 0 && this.numTemp1 == "") {
+            //Si hay un cálculo anterior y el num1 aún está vacío, el resultado anterior es el
+            // num1 del siguiente cálculo.
+            this.num1 = this.result
+            this.numTemp1 = df.format(this.result).toString()
+        } else {
+            //Sino, asignamos num1 del objeto calc convirtiendo los dígitos introducidos a float.
+            //Además, si existe algún problema o cuando si se pulsa un operador sin introducir
+            // número antes, lo capturamos y usamos el valor 0.
+            try {
+                this.num1 = this.numTemp1.toFloat()
+            } catch (e: NumberFormatException) {
+                this.num1 = 0f
+                this.numTemp1 = "0"
+            }
+        }
+
+        //Asignamos el operador al objeto calc, mostramos info en pantalla y actualizamos las
+        // características necesarias de calc para indicar que pasamos al estado de introducir
+        // el segundo número.
+        this.op = num
+        actualizaInfoPantallas(this.operadorTxt(), this.numTemp1 + this.operadorTxt())
+        this.numTemp2 = ""
+        this.primerNum = false
+
+    }
+
+
+    /**
+     * Tratamiento de la operación cuando estamos introduciendo el segundo número.
+     */
+    private fun actualizaOperadorSegundoNum(num: Int) {
+
+        //Convertimos la cadena de dígitos en el número 2 y realizamos el cálculo.
+        //Si existe algún problema en la conversión la controlamos asignando el valor 0.
+        this.num2 = try {
+            this.numTemp2.toFloat()
+        } catch (e: NumberFormatException) {
+            0f
+        }
+        calcular()
+
+        //Mostramos en pantalla el resultado del cálculo como detalle y la operación en la
+        // pantalla principal.
+        actualizaInfoPantallas(
+            this.operadorTxt(num),
+            df.format(this.result).toString() + this.operadorTxt(num)
+        )
+
+        //Actualizamos las características necesarias del objeto calc, ya que vamos a seguir en
+        // el estado de introducir solo un segundo número, ya que el primer número y la operación
+        // es asignado como el resultado del cálculo realizado y la nueva operación introducida.
+        this.num1 = this.result
+        this.op = num
+        this.num2 = 0f
+        this.numTemp1 = df.format(this.num1).toString()
+        this.numTemp2 = ""
+
+    }
+
+
+    /**
+     * Actualiza y almacena la información en cadenas de caracteres (this.numTemp1 y this.numTemp2)
+     * de cada pulsación de los dígitos de los números que se usarán posteriormente en el cálculo y
+     * acabarán siendo almacenados como this.num1 y this.num2.
      *
      * @param num que corresponde al dígito del 0 al 9 pulsado o al punto decimal (10)
      */
     fun tecleaDigito(num: Int) {
+
         //Si es menor que 10, se trata de un dígito del 0 al 9.
         //Sino, es el punto decimal.
         if (num < 10) {
@@ -121,65 +198,34 @@ class Calculo {
     }
 
 
+    /**
+     * Actualiza y almacena la información del operador seleccionado para el cálculo.
+     *
+     * @param num que corresponde a cada operación (0 = Sumar / 1 = Restar / 2 = Multiplicar /
+     * 3 = Dividir).
+     */
     fun tecleaOperador(num: Int) {
+
         if (this.primerNum) {
-            //Tratamiento de la operación cuando estamos introduciendo el primer número.
-
-            if (this.numCalculos > 0 && this.numTemp1 == "") {
-                //Si hay un cálculo anterior y el num1 aún está vacío, el resultado anterior es el num1 del siguiente cálculo.
-                this.num1 = this.result
-                this.numTemp1 = df.format(this.result).toString()
-            } else {
-                //Sino, asignamos num1 del objeto calc convirtiendo los dígitos introducidos a float.
-                //Además, si existe algún problema o cuando si se pulsa un operador sin introducir número antes, lo capturamos y usamos el valor 0.
-                try {
-                    this.num1 = this.numTemp1.toFloat()
-                } catch (e: NumberFormatException) {
-                    this.num1 = 0f
-                    this.numTemp1 = "0"
-                }
-            }
-
-            //Asignamos el operador al objeto calc, mostramos info en pantalla y actualizamos las características necesarias de calc para indicar que pasamos al estado de introducir el segundo número.
-            this.op = num
-            actualizaInfoPantallas(this.operadorTxt(), this.numTemp1 + this.operadorTxt())
-            this.numTemp2 = ""
-            this.primerNum = false
+            //Si estamos introduciendo el primer número, actualizamos la info necesaria.
+            actualizaOperadorPrimerNum(num)
         } else if (this.numTemp2 == "") {
-            //Si se introduce una operación y aún no existe el segundo número la nueva operación debe reemplazar la operación anterior.
-
+            //Si se introduce una operación y aún no existe el segundo número la nueva operación
+            // debe reemplazar la operación anterior.
             this.op = num
             //Mostramos en pantalla la actualización del operador.
             actualizaInfoPantallas(this.operadorTxt(), this.numTemp1 + this.operadorTxt())
         } else {
-            //Tratamiento de la operación cuando estamos introduciendo el segundo número.
-
-            //Convertimos la cadena de dígitos en el número 2 y realizamos el cálculo.
-            //Si existe algún problema en la conversión la controlamos asignando el valor 0.
-            this.num2 = try {
-                this.numTemp2.toFloat()
-            } catch (e: NumberFormatException) {
-                0f
-            }
-            calcular()
-
-            //Mostramos en pantalla el resultado del cálculo como detalle y la operación en la pantalla principal.
-            actualizaInfoPantallas(
-                this.operadorTxt(num),
-                df.format(this.result).toString() + this.operadorTxt(num)
-            )
-
-            //Actualizamos las características necesarias del objeto calc, ya que vamos a seguir en el estado de introducir solo un segundo número, ya que el primer número y la operación es asignado como el resultado del cálculo realizado y la nueva operación introducida.
-            this.num1 = this.result
-            this.op = num
-            this.num2 = 0f
-            this.numTemp1 = df.format(this.num1).toString()
-            this.numTemp2 = ""
+            //Si estamos introduciendo el segundo número, actualizamos la info necesaria.
+            actualizaOperadorSegundoNum(num)
         }
+
     }
 
+
     /**
-     * Elimina un dígito en las cadenas de caracteres (this.numTemp1 y this.numTemp2) según el número que esté introduciendo el usuario o la operación.
+     * Elimina un dígito en las cadenas de caracteres (this.numTemp1 y this.numTemp2) según el
+     * número que esté introduciendo el usuario o la operación.
      *
      * @return Boolean indicando si se pudo borrar el dígito o no fue posible.
      */
@@ -211,9 +257,16 @@ class Calculo {
         return ret
     }
 
+
+    /**
+     * Realiza el cálculo solicitado por el usuario y lo almacena en la propiedad this.result.
+     *
+     * @return Boolean indicando si se pudo realizar el cálculo o no era posible.
+     */
     fun pulsaResult(): Boolean {
         if (!this.primerNum && this.numTemp2 != "") {
-            //Si estamos introduciendo el segundo número, lo actualizamos convirtiendo la cadena de dígitos y calculamos la operación.
+            //Si estamos introduciendo el segundo número, lo actualizamos convirtiendo la cadena de
+            // dígitos y calculamos la operación.
             this.num2 = try {
                 this.numTemp2.toFloat()
             } catch (e: NumberFormatException) {
@@ -221,7 +274,8 @@ class Calculo {
             }
             calcular()
 
-            //Actualizamos en el mensaje ppal el resultado y en el mensaje detalle toda la operación (num1 + num2 = result) formateando a 2 posiciones decimales.
+            //Actualizamos en el mensaje ppal el resultado y en el mensaje detalle toda la operación
+            // (num1 + num2 = result) formateando a 2 posiciones decimales.
             actualizaInfoPantallas(
                 pantalla = df.format(this.result).toString(),
                 detalle = df.format(this.num1).toString() +
@@ -240,6 +294,9 @@ class Calculo {
     }
 
 
+    /**
+     * Actualiza la información que se muestra en pantalla (ppal y detalle).
+     */
     private fun actualizaInfoPantallas() {
         //Actualizamos la información de los mensajes que se mostrarán en la pantalla de la calculadora
         if (this.primerNum) {
@@ -252,21 +309,26 @@ class Calculo {
         }
     }
 
+
     /**
-     * Actualiza la información en los componentest TextView txtPantalla y txtDetalle.
+     * Actualiza la información que se muestra en pantalla (ppal y detalle).
      *
-     * @param pantalla info a mostrar en txtPantalla
-     * @param detalle info a mostrar en txtDetalle
+     * @param pantalla info a mostrar en el Text ppal.
+     * @param detalle info a mostrar en el Text detalle.
      */
     private fun actualizaInfoPantallas(pantalla: String, detalle: String) {
         this.msjPpal = pantalla
         this.msjDetalle = detalle
     }
 
+
     /**
-     * Inicializar las características del objeto calc.
+     * Inicializa las características del objeto calc.
      *
-     * @param resetNumCalculos indica si ponemos a 0 o no el valor de numCalculos
+     * @param resetNumCalculos indica si ponemos a 0 o no el valor de numCalculos.
+     *        (por defecto es true)
+     * @param resetResult indica si ponemos a 0 o no el valor de result.
+     *        (por defecto es true)
      */
     fun iniValores(resetNumCalculos: Boolean = true, resetResult: Boolean = true) {
         this.num1 = 0f

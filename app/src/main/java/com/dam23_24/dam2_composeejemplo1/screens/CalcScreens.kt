@@ -1,5 +1,6 @@
 package com.dam23_24.dam2_composeejemplo1.screens
 
+
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -33,16 +34,24 @@ import com.dam23_24.dam2_composeejemplo1.R
 
 private val calc = Calculo()
 
+
+/**
+ * Función Composable principal que se llama desde el setContent del MainActivity y contiene
+ * los estados y realiza las llamadas a las funciones Composable que componen todos los elementos
+ * del layout.
+ */
 @Preview(showBackground = true)
 @Composable
 fun CalcScreen() {
 
+    //Contexto y estados
     val context = LocalContext.current
     var msjPpal by remember { mutableStateOf("") }
     var msjDetalle by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
+        //Text que muestran la información de la pantalla ppal y el detalle.
         ScreenDetailText(
             msjPpal = msjPpal,
             msjDetalle = msjDetalle
@@ -53,63 +62,28 @@ fun CalcScreen() {
                 .fillMaxWidth()
         ) {
 
+            //Primera fila de botones del 0 al 3.
             ScreenBtn0_3(
-                onClickBtn0 = {
-                    calc.tecleaDigito(0)
+                onClickBtn = {
+                    calc.tecleaDigito(it)
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
-                },
-                onClickBtn1 = {
-                    calc.tecleaDigito(1)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtn2 = {
-                    calc.tecleaDigito(2)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtn3 = {
-                    calc.tecleaDigito(3)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                })
+                }
+            )
 
+            //Segunda fila de botones del 4 al 7.
             ScreenBtn4_7(
-                onClickBtn4 = {
-                    calc.tecleaDigito(4)
+                onClickBtn = {
+                    calc.tecleaDigito(it)
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
-                },
-                onClickBtn5 = {
-                    calc.tecleaDigito(5)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtn6 = {
-                    calc.tecleaDigito(6)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtn7 = {
-                    calc.tecleaDigito(7)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                })
+                }
+            )
 
+            //Tercera fila de botones: 8, 9, punto decimal (.) y Reset (C).
             ScreenBtn8_C(
-                onClickBtn8 = {
-                    calc.tecleaDigito(8)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtn9 = {
-                    calc.tecleaDigito(9)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtnDec = {
-                    calc.tecleaDigito(10)
+                onClickBtn = {
+                    calc.tecleaDigito(it)
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
                 },
@@ -117,16 +91,13 @@ fun CalcScreen() {
                     calc.iniValores()
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
-                })
+                }
+            )
 
+            //Cuarta fila de botones: operaciones sumar (+), restar(-) y ejecutar cálculo (=).
             ScreenBtnOper_Res(
-                onClickBtnSum = {
-                    calc.tecleaOperador(0)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtnRes = {
-                    calc.tecleaOperador(1)
+                onClickBtnOp = {
+                    calc.tecleaOperador(it)
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
                 },
@@ -138,16 +109,13 @@ fun CalcScreen() {
                     ).show()
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
-                })
+                }
+            )
 
+            //Quinta fila de botones: operaciones sumar (*), restar(/) y borrar dígito (<).
             ScreenBtnOper_Del(
-                onClickBtnMul = {
-                    calc.tecleaOperador(2)
-                    msjPpal = calc.msjPpal
-                    msjDetalle = calc.msjDetalle
-                },
-                onClickBtnDiv = {
-                    calc.tecleaOperador(3)
+                onClickBtnOp = {
+                    calc.tecleaOperador(it)
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
                 },
@@ -159,14 +127,18 @@ fun CalcScreen() {
                     ).show()
                     msjPpal = calc.msjPpal
                     msjDetalle = calc.msjDetalle
-                })
+                }
+            )
         }
     }
 }
 
 
+/**
+ * Función Composable que genera el layout de los textos principal y detalle de la calculadora.
+ */
 @Composable
-fun ScreenDetailText(
+private fun ScreenDetailText(
     msjPpal: String,
     msjDetalle: String
 ) {
@@ -201,12 +173,13 @@ fun ScreenDetailText(
     }
 }
 
+
+/**
+ * Función Composable que genera el layout de los botones del 0 al 3 de la primera fila.
+ */
 @Composable
-fun ScreenBtn0_3(
-    onClickBtn0: () -> Unit,
-    onClickBtn1: () -> Unit,
-    onClickBtn2: () -> Unit,
-    onClickBtn3: () -> Unit
+private fun ScreenBtn0_3(
+    onClickBtn: (Int) -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -215,25 +188,25 @@ fun ScreenBtn0_3(
             .padding(start = 20.dp, top = 40.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { onClickBtn0() },
+            onClick = { onClickBtn(0) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn0), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn1() },
+            onClick = { onClickBtn(1) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn1), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn2() },
+            onClick = { onClickBtn(2) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn2), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn3() },
+            onClick = { onClickBtn(3) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn3), fontSize = 32.sp)
@@ -241,12 +214,13 @@ fun ScreenBtn0_3(
     }
 }
 
+
+/**
+ * Función Composable que genera el layout de los botones del 4 al 7 de la segunda fila.
+ */
 @Composable
 fun ScreenBtn4_7(
-    onClickBtn4: () -> Unit,
-    onClickBtn5: () -> Unit,
-    onClickBtn6: () -> Unit,
-    onClickBtn7: () -> Unit
+    onClickBtn: (Int) -> Unit
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -255,25 +229,25 @@ fun ScreenBtn4_7(
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { onClickBtn4() },
+            onClick = { onClickBtn(4) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn4), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn5() },
+            onClick = { onClickBtn(5) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn5), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn6() },
+            onClick = { onClickBtn(6) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn6), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn7() },
+            onClick = { onClickBtn(7) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn7), fontSize = 32.sp)
@@ -281,11 +255,14 @@ fun ScreenBtn4_7(
     }
 }
 
+
+/**
+ * Función Composable que genera el layout de los botones 8, 9, punto decimal (.) y
+ * reset (C) de la tercera fila.
+ */
 @Composable
 fun ScreenBtn8_C(
-    onClickBtn8: () -> Unit,
-    onClickBtn9: () -> Unit,
-    onClickBtnDec: () -> Unit,
+    onClickBtn: (Int) -> Unit,
     onClickBtnC: () -> Unit
 ) {
     Row(
@@ -295,19 +272,20 @@ fun ScreenBtn8_C(
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { onClickBtn8() },
+            onClick = { onClickBtn(8) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn8), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtn9() },
+            onClick = { onClickBtn(9) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btn9), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtnDec() },
+            //El punto decimal se trata con el número 10 en el método tecleaDigito del objeto calc.
+            onClick = { onClickBtn(10) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnDec), fontSize = 32.sp)
@@ -321,10 +299,14 @@ fun ScreenBtn8_C(
     }
 }
 
+
+/**
+ * Función Composable que genera el layout de los botones de los operadores sumar (+),
+ * restar (-) y resultado (=) de la cuarta fila.
+ */
 @Composable
 fun ScreenBtnOper_Res(
-    onClickBtnSum: () -> Unit,
-    onClickBtnRes: () -> Unit,
+    onClickBtnOp: (Int) -> Unit,
     onClickBtnResult: () -> Unit
 ) {
     Row(
@@ -334,13 +316,13 @@ fun ScreenBtnOper_Res(
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { onClickBtnSum() },
+            onClick = { onClickBtnOp(0) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnSuma), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtnRes() },
+            onClick = { onClickBtnOp(1) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnResta), fontSize = 32.sp)
@@ -356,10 +338,14 @@ fun ScreenBtnOper_Res(
     }
 }
 
+
+/**
+ * Función Composable que genera el layout de los botones de los operadores multiplicar (*), dividir (/) y
+ * borrar dígito (<) de la última fila.
+ */
 @Composable
 fun ScreenBtnOper_Del(
-    onClickBtnMul: () -> Unit,
-    onClickBtnDiv: () -> Unit,
+    onClickBtnOp: (Int) -> Unit,
     onClickBtnDel: () -> Unit
 ) {
     Row(
@@ -369,13 +355,13 @@ fun ScreenBtnOper_Del(
             .padding(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 40.dp)
     ) {
         Button(
-            onClick = { onClickBtnMul() },
+            onClick = { onClickBtnOp(2) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnMul), fontSize = 32.sp)
         }
         Button(
-            onClick = { onClickBtnDiv() },
+            onClick = { onClickBtnOp(3) },
             modifier = Modifier.size(80.dp)
         ) {
             Text(text = stringResource(R.string.txt_btnDiv), fontSize = 32.sp)
@@ -390,5 +376,3 @@ fun ScreenBtnOper_Del(
         }
     }
 }
-
-
