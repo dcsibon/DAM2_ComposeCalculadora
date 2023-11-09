@@ -193,7 +193,8 @@ private fun ScreenRowButtons(
                 numbtn = numbtn[i],
                 txtBtn = txtBtn[i],
                 width = width[i],
-                onClickBtn = { onClickBtn(numbtn[i]) })
+                onClickBtn = { onClickBtn(numbtn[i]) }
+            )
         }
     }
 }
@@ -213,6 +214,9 @@ private fun ScreenButton(
         onClick = { onClickBtn(numbtn) },
         modifier = Modifier.width(width.dp).height(80.dp)
     ) {
-        Text(text = txtBtn, fontSize = 32.sp)
+        Text(
+            text = txtBtn,
+            fontSize = 32.sp
+        )
     }
 }
