@@ -1,6 +1,7 @@
 package com.dam23_24.dam2_composeejemplo1.screens
 
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -99,11 +100,7 @@ fun CalcScreen() {
                 width = listOf(80, 80, 160),
                 onClickBtn = {
                     if (!Calculo.pulsaBoton(it)){
-                        Toast.makeText(
-                            context,
-                            "Debe introducir 2 números y una operación para mostrar un resultado",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        mensajeError(context, "Debe introducir 2 números y una operación para mostrar un resultado")
                     }
                     msjPpal = Calculo.getMsjPpal()
                     msjDetalle = Calculo.getMsjDetalle()
@@ -117,11 +114,7 @@ fun CalcScreen() {
                 width = listOf(80, 80, 160),
                 onClickBtn = {
                     if (!Calculo.pulsaBoton(it)){
-                        Toast.makeText(
-                            context,
-                            "No existe nada para borrar",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        mensajeError(context, "No existe nada para borrar")
                     }
                     msjPpal = Calculo.getMsjPpal()
                     msjDetalle = Calculo.getMsjDetalle()
@@ -219,4 +212,22 @@ private fun ScreenButton(
             fontSize = 32.sp
         )
     }
+}
+
+
+/**
+ * Muestra un mensaje de error con Toast en el contexto origen
+ *
+ * @param context Contexto local actual
+ * @param msj Mensaje de texto a mostrar
+ */
+fun mensajeError(
+    context: Context,
+    msj: String
+){
+    Toast.makeText(
+        context,
+        msj,
+        Toast.LENGTH_SHORT
+    ).show()
 }

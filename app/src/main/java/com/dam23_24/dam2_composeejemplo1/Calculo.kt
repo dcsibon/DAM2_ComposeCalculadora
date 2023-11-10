@@ -1,6 +1,8 @@
 package com.dam23_24.dam2_composeejemplo1
 
+import android.content.Context
 import android.icu.text.DecimalFormat
+import android.widget.Toast
 
 @Suppress("SpellCheckingInspection")
 class Calculo {
