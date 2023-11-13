@@ -18,7 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +41,8 @@ fun CalcScreen() {
 
     //Contexto y estados
     val context = LocalContext.current
-    var msjPpal by remember { mutableStateOf("") }
-    var msjDetalle by remember { mutableStateOf("") }
+    var msjPpal by rememberSaveable { mutableStateOf("") }
+    var msjDetalle by rememberSaveable { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
@@ -205,7 +205,9 @@ private fun ScreenButton(
 ) {
     Button(
         onClick = { onClickBtn(numbtn) },
-        modifier = Modifier.width(width.dp).height(80.dp)
+        modifier = Modifier
+            .width(width.dp)
+            .height(80.dp)
     ) {
         Text(
             text = txtBtn,
